@@ -1,1 +1,5 @@
-# COM528-Assesment
+
+# Template project with TicketMachine and Station DAOs
+
+
+
