@@ -37,6 +37,12 @@ public class TicketEncoderImpl extends TicketEncoder{
     final static Logger LOG = LogManager.getLogger(TicketEncoderImpl.class);
 
     // RETURNS NULL IF CANNOT ENCODE TICKET
+
+    /**
+     *
+     * @param ticket
+     * @return
+     */
     public static String encodeTicket(Ticket ticket) {
 
         try {

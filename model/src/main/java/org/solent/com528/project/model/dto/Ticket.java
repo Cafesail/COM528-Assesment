@@ -90,7 +90,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" + "startStation=" + startStation + ", cost=" + cost + ", encryptedHash=" + encryptedHash + ", rate=" + rate + ", issueDate=" + issueDate + '}';
+        return "Ticket{" + "startStation=" + startStation + ", cost=" + cost + ", encryptedHash=" + encryptedHash + ", rate=" + rate + ", issueDate=" + issueDate + ", zones=" +zones + ", validTo=" + validTo + '}';
     }
 
 

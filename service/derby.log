@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Mon Dec 28 12:30:50 EET 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0176-a8e6-8cb3-000008e629a0 
-on database directory /Users/johngimiliaris/Documents/SolentDocs/ticket-prj/service/target/tmp/farmdb  with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
+Sun Jan 03 11:51:15 EET 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0176-c7a8-77d2-000008e66558 
+on database directory /Users/johngimiliaris/Documents/ticket-priject/COM528-Assesment/service/target/tmp/farmdb  with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
 Loaded from file:/Users/johngimiliaris/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_261-b12
-user.dir=/Users/johngimiliaris/Documents/SolentDocs/ticket-prj/service
+user.dir=/Users/johngimiliaris/Documents/ticket-priject/COM528-Assesment/service
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

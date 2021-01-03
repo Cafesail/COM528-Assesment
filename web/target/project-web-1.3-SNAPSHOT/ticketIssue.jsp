@@ -1,10 +1,16 @@
+
+
+
+<%@page import="org.solent.com528.project.clientservice.impl.TicketEncoder"%>
+<%@page import="org.solent.com528.project.model.dto.Ticket"%>
 <%-- 
     Document   : ticketIssue
     Created on : 28-Dec-2020, 14:46:39
     Author     : johngimiliaris
 --%>
 
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 
 
 <%@page import="java.util.Calendar"%>
@@ -15,8 +21,7 @@
 <%@page import="org.solent.com528.project.model.dto.TicketMachine"%>
 <%@page import="org.solent.com528.project.model.dao.TicketMachineDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+
 
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -28,14 +33,11 @@
 <%@page import="org.solent.com528.project.model.dto.Station"%>
 
 
+
 <%
     // used to place error message at top of page 
     String errorMessage = "";
     String message = "";
-
-    // used to set html header autoload time. This automatically refreshes the page
-    // Set refresh, autoload time every 20 seconds
-    response.setIntHeader("Refresh", 20);
 
     // accessing service 
     ServiceFacade serviceFacade = (ServiceFacade) WebObjectFactory.getServiceFacade();
@@ -45,8 +47,10 @@
     Set<Integer> zones = stationDAO.getAllZones();
     List<Station> stationList = new ArrayList<Station>();
     
-   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); 
-
+    //config the date object
+    String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
+    DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+    
     // accessing request parameters
     String actionStr = request.getParameter("action");
     String stationName = request.getParameter("stationName");
@@ -54,20 +58,6 @@
     
     String ticketMachineUUID = request.getParameter("ticketMachineUuid");
 
-    Integer zone = 0;
-    if (zoneStr != null) {
-        zone = Integer.parseInt(zoneStr);
-    } else {
-        if (!zones.isEmpty()) {
-            zone = zones.iterator().next();
-        }
-    }
-    
-//    //ticket machine information
-//        //TicketMachine ticketMachine = null;
-//    TicketMachine ticketMachine = ticketMachineDAO.findByUuid(ticketMachineUUID);
-//    String ticketMachineInfo = ticketMachine.toString();
-    
     //Station Names
     String goTostation = request.getParameter("stationName");
     String startStation = request.getParameter("startStatName");
@@ -75,9 +65,8 @@
     //Go to station Object Initiation
     Station targetStation = null;
     targetStation = stationDAO.findByName(goTostation);
-    
+
     //Start Station Object
-    
     int targetZone = targetStation.getZone();
     int startZone = stationDAO.findByName(startStation).getZone();
     
@@ -87,49 +76,39 @@
         zonesTravelled = zonesTravelled *-1;
     }
     
-    Double peakPricePerZone = 5.10;
-
-    Double offpeakPricePerZone = 3.10;
-    Double ticketPrice = peakPricePerZone * zonesTravelled;
+    //Date info
+    String validFromStr = "";
+    validFromStr = df.format(new Date());
     
-//    Date validTo = new Date();
-
-    Date currentDate = new Date();
-    Calendar c = Calendar.getInstance();
-    c.setTime(currentDate);
+    String validToStr = "";
+    validToStr = df.format(new Date(new Date().getTime() + 1000 * 60 * 60 * 24));
     
-    String validTo = c.getTime().toString();
+    Date validFrom = df.parse(validFromStr);
+    Date validTo = df.parse(validToStr);
     
-    String testDate = validTo.toString();
-    
-    
-
-    
-    //TODO: DELETE THIS JUST FOR CHECK USE
-    String tstat = targetStation.toString();
- 
+    //Setting the Prices
+    Double pperofzone = 0.0;
+    try {
+        pperofzone = priceCalculatorDAO.getOffpeakPricePerZone();
+        
+    } catch (Exception ex) {
+        errorMessage = ex.getMessage();
+    }
    
-    
-    // return station list for zone
-    if (zoneStr == null || zoneStr.isEmpty()) {
-        stationList = stationDAO.findAll();
-    } else {
-        try {
-            stationList = stationDAO.findByZone(zone);
-        } catch (Exception ex) {
-            errorMessage = ex.getMessage();
-        }
-    }
-    
+    //create ticket
+    Ticket ticket = new Ticket();
+    ticket.setCost(pperofzone);
+    ticket.setIssueDate(validFrom);
+    ticket.setStartStation(startStation);
+    ticket.setZones(zonesTravelled);
+    ticket.setValidTo(validTo);
+  
+    //encode ticket
+    String encodedTicket = "";
+    encodedTicket = TicketEncoder.encodeTicket(ticket);
 
-    // basic error checking before making a call
-    if (actionStr == null || actionStr.isEmpty()) {
-        // just display list
     
-    } else {
-        errorMessage = "ERROR: page called for unknown action";
-    }
-
+    
 %>
 
 <html>
@@ -142,24 +121,29 @@
         
 
         <H1>Ticket Issue</H1>
-        <p>The time is: <%= new Date().toString()%> (note page is auto refreshed every 20 seconds)</p>
+        <p>The time is: <%= new Date().toString()%></p>
        <!-- <p>Selected Machine: </p> -->
         <h3>You Are at Station: <%= startStation%></h3>
         <p><%= startZone%></p>
-        <p><%= zonesTravelled%></p>
-        <p><%= testDate%></p>
+        <p><%= encodedTicket%></p>
+        <p>Valid From: <%= validFrom.toString()%></p>
+        <p>Valid To <%= validTo.toString()%></p>
+        <p>The off peak price is: <%=pperofzone%></p>
     
         <p>GoTo station is: <%= targetZone%></p>
         
         
         <!<!--TODO: DELETE THIS  -->
  
-        <p>The station we are going to: <%= tstat%></p>
+        <p>The station you are going to: <%= goTostation%></p>
         <!-- print error message if there is one -->
         <div style="color:red;"><%=errorMessage%></div>
         <div style="color:green;"><%=message%></div>
+        
+        <h1>Your Ticket</h1>
+        <textarea id="ticketTextArea" rows="10" cols="120"><%=encodedTicket%></textarea>
 
-        <p>The time is: <%= new Date().toString()%> (note page is auto refreshed every 20 seconds)</p>
+    
 
         
     </body>
