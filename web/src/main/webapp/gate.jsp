@@ -40,10 +40,10 @@
     gateOpen = TicketEncoder.validateTicket(ticketStr);
     String sysResponse = "";
     if (gateOpen == true){
-        sysResponse = "enter";
+        sysResponse = "Enter";
     }
     else {
-        sysResponse = "poulo";
+        sysResponse = "Invalid Ticket";
     }
     
 
@@ -82,7 +82,7 @@
         </form> 
         
         
-        <H1><%=sysResponse%></H1>
+        <H6><%=sysResponse%></H6>
 
         
         
