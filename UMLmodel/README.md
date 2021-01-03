@@ -28,13 +28,22 @@ These are also referenced below;
 
 ### Use Cases and Robustness Diagrams
 
-##### Template use case diagram
+##### Use case Diagrams
+###### Use Case Operator
 
-![alt text](../UMLmodel/drawio/exampleproject-usecase-drawio.png "Figure exampleproject-usecase-drawio.png")
+![alt text](../UMLmodel/drawio/usecase_operator_image.png "Figure eusecase_operator_image.png")
 
-##### Template Robustness Diagram 
+###### Use Case Controller
 
-![alt text](../UMLmodel/drawio/exampleproject-robustness-diagram-drawio.png "Figure exampleproject-robustness-diagram-drawio.png")
+![alt text](../UMLmodel/drawio/usecase_controller_image.png "usecase_controller_image.png")
+
+###### Use Case User
+
+![alt text](../UMLmodel/drawio/usecase_user_image.png "Figure usecase_user_image.png")
+
+##### Robustness Diagram 
+
+![alt text](../UMLmodel/drawio/robustness-image.png "Figure robustness-image.png")
 
 
 
